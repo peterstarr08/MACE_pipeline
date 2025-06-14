@@ -12,17 +12,17 @@ class FPS(Selector):
         self.r_cut = r_cut
         self.n_max = n_max
         self.l_max = l_max
+        self.soap = SOAP(species=[atomic_numbers[a] for a in self.atoms],
+                    r_cut=self.r_cut,
+                    n_max=self.n_max,
+                    l_max=self.l_max
+                )
     
     def select(self, configs, nframe):
         if len(configs)<nframe:
             raise ValueError(f'Not enough {nframe} frame(s) in Atoms[{len(configs)}] ')
         
-        soap = SOAP(species=[atomic_numbers[a] for a in self.atoms],
-                    r_cut=self.r_cut,
-                    n_max=self.n_max,
-                    l_max=self.l_max
-        )
-        descriptor_list = [soap.create(s) for s in configs]
+        descriptor_list = [self.soap.create(s) for s in configs]
         X = np.array([desc.mean(axis=0) for desc in descriptor_list])
         selected = [0]
 
