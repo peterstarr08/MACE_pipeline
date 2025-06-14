@@ -9,7 +9,7 @@ from pathlib import Path
 read_dir = "out"
 save_dir = "dumped_files"
 
-frames_size = 5
+frames_size = 20
 
 @pytest.fixture(scope="session")
 def read_io_save_path(tmp_path_factory):
