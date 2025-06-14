@@ -39,6 +39,11 @@ class Record(ABC):
     @abstractmethod
     def parse(data: tuple):
         ...
+    
+    @staticmethod
+    @abstractmethod
+    def extract_path(label: str, *args):
+        ...
 
     @abstractmethod
     def db_format(self):
@@ -53,7 +58,7 @@ class Record(ABC):
         ...
 
 class RawDataset(Record):
-    def __init__(self, label: str, file_type: str):
+    def __init__(self, label: str, file_type: str = 'xyz'):
         super().__init__(label=label, file_type=file_type)
 
     def db_format(self)->tuple:
@@ -67,12 +72,16 @@ class RawDataset(Record):
         return raw_dataset_path/Path(f'{self.file_path()}/{self.file_name()}')
     
     @staticmethod
+    def extract_path(label, file_type='xyz'):
+        return RawDataset(label, file_type).full_path()
+    
+    @staticmethod
     def parse(data: tuple):
         '''Expects (file_type, label)'''
         return RawDataset(label=data[1], file_type = data[0])
     
 class Dataset(Record):
-    def __init__(self, label: str, operation: str, file_type: str):
+    def __init__(self, label: str, operation: str, file_type: str = 'xyz'):
         super().__init__(label=label, file_type=file_type)
         if not isinstance(operation, str):
             raise TypeError("operation parameter is not string")
@@ -88,7 +97,10 @@ class Dataset(Record):
     def full_path(self):
         return dataset_path/Path(f'{self.file_path()}/{self.file_name()}')
     
-
+    @staticmethod
+    def extract_path(label, operation, file_type='xyz'):
+        return Dataset(label=label, file_type=file_type, operation=operation).full_path()
+    
     @staticmethod
     def parse(data: tuple):
         '''Expects (file_type, label, operation)'''

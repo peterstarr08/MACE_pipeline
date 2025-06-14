@@ -61,3 +61,19 @@ def test_file_full_path(file_type, label, full_path):
     assert isinstance(rd.full_path(), Path)
     assert full_path == rd.full_path()
 
+
+@pytest.mark.parametrize("file_type, label, full_path", 
+                            [   
+                                ("xyz", "benzene_10", raw_dataset_path/Path('benzene/10/benzene_10__raw_dataset.xyz')),
+                                # ("sdf", "benzene_cut_10", "benzene_cut_10__raw_dataset.sdf"),
+                                pytest.param("xyz", "benzene_cut_10", "benzene_cut_10__raw_dataset", marks=pytest.mark.xfail),
+                                pytest.param("xyz", "benzene_cut_10", "benzene_cut_10.sdf", marks=pytest.mark.xfail)
+
+                            ]
+                        )
+def test_path_parser(file_type, label, full_path):
+    rd = RawDataset.extract_path(label=label)
+    assert isinstance(rd, Path)
+    assert full_path == rd
+
+
