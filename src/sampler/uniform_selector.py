@@ -10,5 +10,5 @@ class UniformSelector(Selector):
         if len(configs)<nframe:
             raise ValueError(f'Not enough {nframe} frame(s) in Atoms[{len(configs)}] ')
         
-        indices = np.linspace(self.offset, len(configs), nframe, dtype=int)
+        indices = np.linspace(self.offset, len(configs), nframe, endpoint=False, dtype=int)
         return [configs[i].copy() for i in indices]
