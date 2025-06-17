@@ -8,7 +8,8 @@
 *.xyz
 
 /dataset/
-/rawdataset/
+/raw_dataset/
+/dumped_frames/
 /bash_log/
 /log/
 /mace_models/
