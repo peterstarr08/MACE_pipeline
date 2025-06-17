@@ -7,3 +7,7 @@
 
 *.xyz
 
+/dataset/
+/rawdataset/
+/bash_log/
+/log/
