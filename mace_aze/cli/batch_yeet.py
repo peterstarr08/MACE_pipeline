@@ -1,7 +1,7 @@
 import os
 import argparse
 from pathlib import Path
-from utils.records import RawDataset
+from mace_aze.utils.records import RawDataset
 from ase.io import read, write
 
 def arg_parse():

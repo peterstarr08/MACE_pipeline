@@ -3,10 +3,10 @@ import os
 from pathlib import Path
 from ase.io import read, write
 from ase import Atoms
-from sampler import UniformSelector
-from calculators import XTBCalculator
-from utils.records import RawDataset, Dataset
-from config import us_0_selected, us_off_selected
+from mace_aze.sampler import UniformSelector
+from mace_aze.calculators import XTBCalculator
+from mace_aze.utils.records import RawDataset, Dataset
+from mace_aze.config import us_0_selected, us_off_selected
 
 
 #=================Args=======================

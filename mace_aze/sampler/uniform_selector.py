@@ -1,7 +1,7 @@
 from .base import Selector
 import numpy as np
-from config import us_0_selected, us_off_selected
-from utils.generators import generate_space_offset
+from mace_aze.config import us_0_selected, us_off_selected
+from mace_aze.utils.generators import generate_space_offset
 
 class UniformSelector(Selector):
     def __init__(self, offset: int = 0):
