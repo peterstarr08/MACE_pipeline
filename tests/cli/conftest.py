@@ -21,7 +21,7 @@ def frames_save_setup_path(tmp_path_factory):
     frames_save_setup_path = tmp_path_factory.mktemp(save_dir, numbered=False)
     return frames_save_setup_path
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def atoms_records():
     symbols = ['C', 'H', 'O']
     atoms_list = []

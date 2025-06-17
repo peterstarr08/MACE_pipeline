@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 from config import us_0_selected, us_off_selected
 from sampler.uniform_selector import UniformSelector
+from utils.generators import generate_space_offset
 
 frames_count = 20
 
@@ -35,9 +36,7 @@ def test_select(atoms_records, select_count, offset):
     atoms = atoms_records(frames_count)
 
     us = UniformSelector(offset=offset)
-    indx = np.linspace(0, len(atoms), select_count, endpoint=False, dtype=int)
-    offset_indx = np.linspace(offset, len(atoms), select_count, endpoint=False, dtype=int)
-
+    indx, offset_indx = generate_space_offset(select_count, len(atoms), offset)
     us.select(atoms, select_count)
 
     for i in range(len(atoms)):

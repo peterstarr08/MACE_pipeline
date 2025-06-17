@@ -30,9 +30,11 @@ def export_config(db, label: str, ext: str):
 
 def main():
     args = arg_parse()
-    validate_arguments(args.dir, args.labrl)
+    validate_arguments(args.dir, args.label)
     db = collect_frames(Path(args.dir))
     export_config(db, args.label, args.ext)
 
-if __name__=="__main___":
+
+print("Starting Batch yeeeeet", __name__)
+if __name__=="__main__":
     main()
