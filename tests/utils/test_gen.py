@@ -1,6 +1,6 @@
 import pytest
 import numpy as np
-from utils.generators import generate_space_offset  # Replace with your actual module
+from mace_aze.utils.generators import generate_space_offset  # Replace with your actual module
 
 @pytest.mark.parametrize(
     "count, end, offset, overlap, should_raise, expected_len_base",

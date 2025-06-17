@@ -1,8 +1,8 @@
 import numpy as np
 import pytest
-from config import us_0_selected, us_off_selected
-from sampler.uniform_selector import UniformSelector
-from utils.generators import generate_space_offset
+from mace_aze.config import us_0_selected, us_off_selected
+from mace_aze.sampler.uniform_selector import UniformSelector
+from mace_aze.utils.generators import generate_space_offset
 
 frames_count = 20
 

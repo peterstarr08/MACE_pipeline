@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 import re
 from pathlib import Path
 
-from config import (
+from mace_aze.config import (
     RAWDATA_DIR,
     DATASET_DIR,
     raw_dataset_path,

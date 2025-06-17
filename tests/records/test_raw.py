@@ -1,7 +1,7 @@
 import pytest
 from pathlib import Path
-from utils.records import RawDataset
-from config import raw_dataset_path
+from mace_aze.utils.records import RawDataset
+from mace_aze.config import raw_dataset_path
 
 
 '''Testing each indivudual function of Raw dataset class'''

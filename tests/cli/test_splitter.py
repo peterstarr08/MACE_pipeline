@@ -1,6 +1,6 @@
 import pytest
 from pathlib import Path
-from cli.splitter import (
+from mace_aze.cli.splitter import (
     validate_arguments,
     sample_config, calculate,
     save_config,
@@ -12,8 +12,8 @@ from cli.splitter import (
     XTB_CALCULATOR_KEY
 )
 
-from config import us_0_selected, us_off_selected, dataset_path
-from utils.generators import generate_space_offset
+from mace_aze.config import us_0_selected, us_off_selected, dataset_path
+from mace_aze.utils.generators import generate_space_offset
 import numpy as np
 
 
@@ -41,7 +41,7 @@ us_key = {
 )
 def test_validate(mocker, tmp_path_factory, label, atoms, us, offset, count):
     tempDir = tmp_path_factory.mktemp("temp",numbered=True)
-    mock_raw = mocker.patch('cli.splitter.RawDataset')
+    mock_raw = mocker.patch('mace_aze.cli.splitter.RawDataset')
     mock_raw.extract_path.return_value = tempDir
     validate_arguments(label=label, atoms=atoms, us=us, offset=offset, count=count)
 
@@ -82,7 +82,7 @@ def fix_record_calculator(atoms_records):
         ]
 )
 def test_calculate(fix_record_calculator, mocker, count, offset, key, calculator, atoms, expected_atoms):
-    mock_xtb = mocker.patch('cli.splitter.XTBCalculator')
+    mock_xtb = mocker.patch('mace_aze.cli.splitter.XTBCalculator')
     db = fix_record_calculator(count, offset, key)
 
     conf = calculate(db, key, calculator, [l[0] for l in atoms])
@@ -135,7 +135,7 @@ def create_conf_save(atoms_records):
         ]
 )
 def test_save_config(mocker, create_conf_save, label, calc, key, storage_path_train, storage_path_test):
-    mock_write_config = mocker.patch("cli.splitter.write_configs")
+    mock_write_config = mocker.patch("mace_aze.cli.splitter.write_configs")
     db, trs, tes = create_conf_save(key)
     save_config(label, db, calc, key)
     argVal = (
