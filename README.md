@@ -15,7 +15,7 @@ Each `[...]` is underscore `_` separated values. And each block are separted by 
  - **Index 2**: Information about what operation was done on that file recently. Exhaustive possible values for `[$operation]`: `xtb` for labelling xtb calculated configs. Will keep updating this
 
 
-## [Directory representation](https://tree.nathanfriend.com/?s=(%27options!(%27fancy!true~fullPath!false~trailingSlash!true~rootDot!false)~O(%27O%27MACE_PIPELINEG*raw_7B793147K79*8479-mixG*7B6xtb9HF3146maceKF*84FG%27)~version!%271%27)*%20%20-G**3R*Q_40_cutoff__6labelled__7dataset8**-JR50R*J_59.xyzB-QR10HF6cp2k9G%5CnH310_ind__JmethanolK9R50354Osource!QbenzeneR-*%01RQOKJHGFB987643-*)
+## [Dataset directory](https://tree.nathanfriend.com/?s=(%27options!(%27fancy!true~fullPath!false~TlingSlash!true~rootDot!false)~W(%27W%27MACE_PIPELINEG*qR-Fd7Y6-Z67K-4H7U*G8K-8H7GUmixG*RJFd_TnXBQ9*Fd_OXlabelledQjKJ4H9*4Hj-G8KJ8H9*8Hj%27)~version!%271%27)*%20%20-GU*3XBXcp2kV4Ubenzene6cutoff7XqBV8Umethanol9_Tn3-UO-BdatasetFZinG%5CnH_50_6J-UTnYK-50Y6OtestQXxtbVYFtRBG4-10YindTtraiU**V.xyzWsource!X__Y-*Z4_10_j_O3qraw_%01qjZYXWVUTRQOKJHGFB987643-*)
 
 `[$type]` defines files directory from project root. `[label]` splits `_` to path directory
 
@@ -24,31 +24,105 @@ MACE_PIPELINE/
 ├── raw_dataset/
 │   ├── benzene/
 │   │   ├── 10/
-│   │   │   ├── benzene_10_ind__dataset.xyz
-│   │   │   └── benzene_10_cutoff__dataset.xyz
+│   │   │   ├── ind/
+│   │   │   │   └── benzene_10_ind__raw_dataset.xyz
+│   │   │   └── cutoff/
+│   │   │       └── benzene_10_cutoff__raw_dataset.xyz
 │   │   └── 50/
-│   │       └── benzene_50_cutoff__dataset.xyz      
+│   │       └── cutoff/
+│   │           └── benzene_50_cutoff__raw_dataset.xyz      
 │   ├── methanol/
 │   │   └── 50/
-│   │       └── methanol_50_cutoff__dataset.xyz
+│   │       └── cutoff/
+│   │           └── methanol_50_cutoff__raw_dataset.xyz
 │   └── mix
 └── dataset/
     ├── benzene/
     │   ├── 10/
-    │   │   ├── benzene_10_ind__labelled__xtb.xyz
-    │   │   ├── benzene_10_ind__labelled__cp2k.xyz
-    │   │   └── benzene_10_cutoff__labelled__mace.xyz
+    │   │   └── ind/
+    │   │       ├── train/
+    │   │       │   ├── benzene_10_ind_train__dataset__xtb.xyz
+    │   │       │   └── benzene_10_int_train__dataset__cp2k.xyz
+    │   │       └── test/
+    │   │           ├── benzene_10_ind_test__labelled__xtb.xyz
+    │   │           └── benzene_10_int_test__dataset__cp2k.xyz
     │   └── 50/
-    │       └── benzene_50_cutoff__labelled__cp2k.xyz      
+    │       └── cutoff/
+    │           ├── train/
+    │           │   └── benzene_50_cutoff_train__dataset__cp2k.xyz
+    │           └── test/
+    │               └── benzene_50_cutoff_test__dataset__cp2k.xyz
     └── methanol/
         └── 50/
-            └── methanol_50_cutoff__labelled__cp2k.xyz
+            └── cutoff/
+                ├── train/
+                │   └── methanol_50_cutoff_train__dataset__cp2k.xyz
+                └── test/
+                    └── methanol_50_cutoff_test__dataset__cp2k.xyz
 ```
 
-## Database Information
+## [Model paths directory](https://tree.nathanfriend.com/?s=(%27options!(%27fancy!true~fullPath!false~YlingSlash!true~rootDot!false)~source!(%27source!%27MACE_PIPELINE%5Cn7T4benzene47cutQ10Q7Yn-TVWH**9testQ*J_testVTVWH**%209R1%2F-W6H-W6VF1H-W6VF2HQ*U-wH-wVF1H-wVF2HQ7R2%2F-WVR1GH-WVR1GVF1HQ*U%5Cn7Zs4J47configsQR_0V51qR_0V52qR_1V51qU47R_0QtrajQK58K58KF2X851B52B53BUQF2X1BF2X2BU47R_1Q51B52B53.ZlQUQU47gem_2QU47U%27)~version!%271%27)*77-Q*J_YnV4%5Cn*5F1X6VR0G7%20%208Q*%3COpenMM%20files%3EQ9%23%20R%200%3A%20original%20Yn%20TQ7B.ZQFmace0G_%5B%24count%5DH.xyzJbenzene_cut_10K7%5Blabel%5D_Q4*RgenTdatasetU...V__WxtbX_commYtraiZmodelq.ymlQwcp2k6%01wqZYXWVUTRQKJHGFB987654-*)
+
+```
+MACE_PIPELINE/
+├── dataset/
+│   └── benzene/
+│       └── cut/
+│           └── 10/
+│               ├── train/
+│               │   └── benzene_cut_10_train__dataset__xtb.xyz        # gen 0: original train dataset
+│               ├── test/
+│               │   └── benzene_cut_10_test__dataset__xtb.xyz         # gen 0: original train dataset
+│               ├── gen1/
+│               │   ├── benzene_cut_10_train__xtb__gen0_[$count].xyz
+│               │   ├── benzene_cut_10_train__xtb__gen0_[$count]__mace01.xyz
+│               │   ├── benzene_cut_10_train__xtb__gen0_[$count]__mace02.xyz
+│               │   ├── ...
+│               │   ├── benzene_cut_10_train__cp2k__gen0_[$count].xyz
+│               │   ├── benzene_cut_10_train__cp2k__gen0_[$count]__mace01.xyz
+│               │   └── benzene_cut_10_train__cp2k__gen0_[$count]__mace02.xyz
+│               └── gen2/
+│                   ├── benzene_cut_10_train__xtb__gen1_[$count].xyz
+│                   ├── benzene_cut_10_train__xtb__gen1_[$count]__mace01.xyz
+│                   └── ...
+└── models/
+    └── benzene_cut_10/
+        ├── configs/
+        │   ├── gen_0__mace01_comm1.yml
+        │   ├── gen_0__mace01_comm2.yml
+        │   ├── gen_1__mace01_comm1.yml
+        │   └── ...
+        ├── gen_0/
+        │   ├── traj/
+        │   │   ├── [label]_mace01_comm/
+        │   │   │   └── <OpenMM files>
+        │   │   ├── [label]_mace01_comm/
+        │   │   │   └── <OpenMM files>
+        │   │   └── [label]_mace02_comm/
+        │   │       └── <OpenMM files>
+        │   ├── mace01_comm1.model
+        │   ├── mace01_comm2.model
+        │   ├── mace01_comm3.model
+        │   ├── ...
+        │   ├── mace02_comm1.model
+        │   ├── mace02_comm2.model
+        │   └── ...
+        ├── gen_1/
+        │   ├── mace01_comm1.model
+        │   ├── mace01_comm2.model
+        │   ├── mace01_comm3.modell
+        │   ├── ...
+        │   └── ...
+        ├── gem_2/
+        │   └── ...
+        └── ...
+```
+
+
+## Database Information(Not implemented yet)
 In database `[label]` represents a unique dataset. No two dataset will have same label. This label is identifies by `--label` flags to assosciate the operations.
 
-## Development Notes
+###  Development Notes
 There might be additions more blocks depending on the requirement and most probably will be suffixed on end
 
 ### `raw_dataset` block
