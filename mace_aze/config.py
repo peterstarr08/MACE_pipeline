@@ -7,6 +7,7 @@ ROOT = Path(__file__).resolve().parent.parent
 RAWDATA_DIR = "raw_dataset"
 DATASET_DIR = "dataset"
 MODEL_DIR = "models"
+PIPELINE_DIR = "pipelines"
 
 # File paths
 DATABASE_FILE = "db_mace.sqlite3"
@@ -16,6 +17,7 @@ db_path = ROOT / DATABASE_FILE
 dataset_path = ROOT / DATASET_DIR
 raw_dataset_path = ROOT / RAWDATA_DIR
 model_path = ROOT / MODEL_DIR
+pipeline_path = ROOT/PIPELINE_DIR
 
 
 

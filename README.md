@@ -1,3 +1,12 @@
+# Milestones
+- [x] Writing cli's for data parsing 
+- [x] Dataset and raw dataset handling 
+- [x] Learn and include `logger`
+- [ ] YAML handling
+- [ ] Modules for executing pipelines
+- [ ] Top level cli for handling pipeline
+- [ ] Analysis graphers
+
 # File naming convention
 
 Syntax: 
@@ -61,11 +70,21 @@ MACE_PIPELINE/
                     └── methanol_50_cutoff_test__dataset__cp2k.xyz
 ```
 
-## [Active learning directory](https://tree.nathanfriend.com/?s=(%27options!(%27fancy!true~fullPath!false~trailingSlash!true~rootDot!false)~source!(%27source!%27MACE_PIPELINE%5Cn7Z4Z0W4Z1W%5Cn7X4benzene47cutT10T7train-XVwH**9testT*J_testVXVwH**%209Q1%2F-w6H-w6VF1H-w6VF2HT*Y-cp2k6H-cp2k6VF1H-cp2k6VF2HT7Q2%2F-wVQ2GH-wVQ2GVF1HT*Y%5Cn7models4J%25maceTQ_0V51WTQ_0V52WTQ_1V51WTY%25openmm%3ATQ_0VopenmmV51q1K*Q_1VopenmmV52q2K7Q_0TtrajTR58R58R%22851B52B53BYT%221B%222BY47Q_1T51B52B53.modellTYTY47gem_2TY47Y%27)~version!%271%27)*77-T*J_trainV4%5Cn*5F1_comm6VQ1G7%20%208T*%3COpenMM%20files%3ET9%23%20Q%200%3A%20original%20train%20XT7B.modelTFmace0G_%5B%24count%5DH.xyzJbenzene_cut_10K%20to%20do%20a%20md%20run4QgenR7%5Blabel%5D_T4*V__W.ymlXdatasetY...ZpipelineqW**%23Uses%205wxtb%22F2_comm%2547configs_%01%25%22wqZYXWVTRQKJHGFB987654-*) | Single job queue with only 1 md run
+## [Active learning directory](https://tree.nathanfriend.com/?s=(%27options!(%27fancy!true~fullPath!false~trailingSlash!true~rootDot!false)~source!(%27source!%27MACE_PIPELINE%5Cn7Z4configs_mace478TQ_0V51WTQ_0V52WTQ_1V51WTY4configs_openmm478TQ_0VopenmmV51q1K*Q_1VopenmmV52q2KZ0W4Z1W%5Cn7X4benzene47cutT10T7train-XVwJ**BtestT*8_testVXVwJ**%20BQ1%2F-w6J-w6VG1J-w6VG2JT*Y-cp2k6J-cp2k6VG1J-cp2k6VG2JT7Q2%2F-wVQ2HJ-wVQ2HVG1JT*Y%5Cn7models4847Q_0TtrajTR59R59R%22951F52F53FYT%221F%222FY47Q_1T51F52F53.modellTYTY47gem_2TY47Y%27)~version!%271%27)*77-T*8_trainV4%5Cn*5G1_comm6VQ1H7%20%208benzene_cut_109T*%3COpenMM%20files%3ETB%23%20Q%200%3A%20original%20train%20XT7F.modelTGmace0H_%5B%24count%5DJ.xyzK%20to%20do%20a%20md%20run4QgenR7%5Blabel%5D_T4*V__W.ymlXdatasetY...ZpipelineqW**%23Uses%205wxtb%22G2_comm%01%22wqZYXWVTRQKJHGFB987654-*) | Single job queue with only 1 md run
 
 ```
 MACE_PIPELINE/
 ├── pipeline/
+│   ├── configs_mace/
+│   │   └── benzene_cut_10/
+│   │       ├── gen_0__mace01_comm1.yml
+│   │       ├── gen_0__mace01_comm2.yml
+│   │       ├── gen_1__mace01_comm1.yml
+│   │       └── ...
+│   ├── configs_openmm/
+│   │   └── benzene_cut_10/
+│   │       ├── gen_0__openmm__mace01_comm1.yml        #Uses mace01_comm1 to do a md run
+│   │       └── gen_1__openmm__mace01_comm2.yml        #Uses mace01_comm2 to do a md run
 │   ├── pipeline0.yml
 │   └── pipeline1.yml
 ├── dataset/
@@ -90,14 +109,6 @@ MACE_PIPELINE/
 │                   └── ...
 └── models/
     └── benzene_cut_10/
-        ├── configs_mace/
-        │   ├── gen_0__mace01_comm1.yml
-        │   ├── gen_0__mace01_comm2.yml
-        │   ├── gen_1__mace01_comm1.yml
-        │   └── ...
-        ├── configs_openmm:/
-        │   ├── gen_0__openmm__mace01_comm1.yml        #Uses mace01_comm1 to do a md run
-        │   └── gen_1__openmm__mace01_comm2.yml        #Uses mace01_comm2 to do a md run
         ├── gen_0/
         │   ├── traj/
         │   │   ├── [label]_mace01_comm/
@@ -129,7 +140,7 @@ MACE_PIPELINE/
 MD Trajectories: `root/models/[label]/gen[n]/traj/[<label>]_mace[model]/[$openmm_files]`\
 Gen[n] Dataset: `root/dataset/[label.path]/gen[n]/[label]_train__[operation]__gen[n]_[frames_count]__[mace_model].xyz`
 
-**Note `[mace_model]` is just mace version not committee name, since it doesn't makes sense ot name it from committee name**
+**Note `[mace_model]` is just mace version not committee name, since it doesn't makes sense to name it from committee name**
 
 ### Explanation of pipeline execution
 
@@ -138,15 +149,17 @@ Gen[n] Dataset: `root/dataset/[label.path]/gen[n]/[label]_train__[operation]__ge
 pipeline:
 	- gen0:
 		models_path:
-			- root/models/[label]/configs_mace/gen_0__mace01_comm1.yml
-			- root/models/[label]/configs_mace/gen_0__mace01_comm2.yml
+			- [label]/gen_0__mace01_comm1.yml
+			- [label]/gen_0__mace01_comm2.yml
 		md_path:
-			- root/models/[label]/configs_openmm/gen_0__openmm.yml
+			- [label]/gen_0__openmm.yml
 		new_dataset_path:
-			- root/dataset/*/[label]_[operation]__gen1__$[count]__mace01.xyz
+			- [label.path]/[label]_[operation]__gen1__$[count]__mace01.xyz
 	- gen1:
 		...
+metadata: \\Todo
 ```
+**No need to write complete path. Just start from label**
 
 The `mario.py` cli receives input `pipeline.yml`'s path to flag `--pipeline`. The pipeline config contains array of `gen[n]` entries in `pipeline` key. For example: `config.pipeline = [gen0, gen1, gen2, gen3]`. Each `gen[n]` contains three entries specifiying location of `config` files, in order, for`mace model, md openmm, and location for saving generated new daatset. Above is recommended structure for file handling. Program currently doesn't handles this autmatically.
 
