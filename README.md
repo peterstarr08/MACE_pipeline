@@ -61,10 +61,13 @@ MACE_PIPELINE/
                     └── methanol_50_cutoff_test__dataset__cp2k.xyz
 ```
 
-## [Model paths directory](https://tree.nathanfriend.com/?s=(%27options!(%27fancy!true~fullPath!false~YlingSlash!true~rootDot!false)~source!(%27source!%27MACE_PIPELINE%5Cn7T4benzene47cutQ10Q7Yn-TVWH**9testQ*J_testVTVWH**%209R1%2F-W6H-W6VF1H-W6VF2HQ*U-wH-wVF1H-wVF2HQ7R2%2F-WVR1GH-WVR1GVF1HQ*U%5Cn7Zs4J47configsQR_0V51qR_0V52qR_1V51qU47R_0QtrajQK58K58KF2X851B52B53BUQF2X1BF2X2BU47R_1Q51B52B53.ZlQUQU47gem_2QU47U%27)~version!%271%27)*77-Q*J_YnV4%5Cn*5F1X6VR0G7%20%208Q*%3COpenMM%20files%3EQ9%23%20R%200%3A%20original%20Yn%20TQ7B.ZQFmace0G_%5B%24count%5DH.xyzJbenzene_cut_10K7%5Blabel%5D_Q4*RgenTdatasetU...V__WxtbX_commYtraiZmodelq.ymlQwcp2k6%01wqZYXWVUTRQKJHGFB987654-*)
+## [Active learning directory](https://tree.nathanfriend.com/?s=(%27options!(%27fancy!true~fullPath!false~trailingSlash!true~rootDot!false)~source!(%27source!%27MACE_PIPELINE%5Cn7Z4Z0W4Z1W%5Cn7X4benzene47cutT10T7train-XVwH**9testT*J_testVXVwH**%209Q1%2F-w6H-w6VF1H-w6VF2HT*Y-cp2k6H-cp2k6VF1H-cp2k6VF2HT7Q2%2F-wVQ2GH-wVQ2GVF1HT*Y%5Cn7models4J%25maceTQ_0V51WTQ_0V52WTQ_1V51WTY%25openmm%3ATQ_0VopenmmV51q1K*Q_1VopenmmV52q2K7Q_0TtrajTR58R58R%22851B52B53BYT%221B%222BY47Q_1T51B52B53.modellTYTY47gem_2TY47Y%27)~version!%271%27)*77-T*J_trainV4%5Cn*5F1_comm6VQ1G7%20%208T*%3COpenMM%20files%3ET9%23%20Q%200%3A%20original%20train%20XT7B.modelTFmace0G_%5B%24count%5DH.xyzJbenzene_cut_10K%20to%20do%20a%20md%20run4QgenR7%5Blabel%5D_T4*V__W.ymlXdatasetY...ZpipelineqW**%23Uses%205wxtb%22F2_comm%2547configs_%01%25%22wqZYXWVTRQKJHGFB987654-*) | Single job queue with only 1 md run
 
 ```
 MACE_PIPELINE/
+├── pipeline/
+│   ├── pipeline0.yml
+│   └── pipeline1.yml
 ├── dataset/
 │   └── benzene/
 │       └── cut/
@@ -74,24 +77,27 @@ MACE_PIPELINE/
 │               ├── test/
 │               │   └── benzene_cut_10_test__dataset__xtb.xyz         # gen 0: original train dataset
 │               ├── gen1/
-│               │   ├── benzene_cut_10_train__xtb__gen0_[$count].xyz
-│               │   ├── benzene_cut_10_train__xtb__gen0_[$count]__mace01.xyz
-│               │   ├── benzene_cut_10_train__xtb__gen0_[$count]__mace02.xyz
+│               │   ├── benzene_cut_10_train__xtb__gen1_[$count].xyz
+│               │   ├── benzene_cut_10_train__xtb__gen1_[$count]__mace01.xyz
+│               │   ├── benzene_cut_10_train__xtb__gen1_[$count]__mace02.xyz
 │               │   ├── ...
-│               │   ├── benzene_cut_10_train__cp2k__gen0_[$count].xyz
-│               │   ├── benzene_cut_10_train__cp2k__gen0_[$count]__mace01.xyz
-│               │   └── benzene_cut_10_train__cp2k__gen0_[$count]__mace02.xyz
+│               │   ├── benzene_cut_10_train__cp2k__gen1_[$count].xyz
+│               │   ├── benzene_cut_10_train__cp2k__gen1_[$count]__mace01.xyz
+│               │   └── benzene_cut_10_train__cp2k__gen1_[$count]__mace02.xyz
 │               └── gen2/
-│                   ├── benzene_cut_10_train__xtb__gen1_[$count].xyz
-│                   ├── benzene_cut_10_train__xtb__gen1_[$count]__mace01.xyz
+│                   ├── benzene_cut_10_train__xtb__gen2_[$count].xyz
+│                   ├── benzene_cut_10_train__xtb__gen2_[$count]__mace01.xyz
 │                   └── ...
 └── models/
     └── benzene_cut_10/
-        ├── configs/
+        ├── configs_mace/
         │   ├── gen_0__mace01_comm1.yml
         │   ├── gen_0__mace01_comm2.yml
         │   ├── gen_1__mace01_comm1.yml
         │   └── ...
+        ├── configs_openmm:/
+        │   ├── gen_0__openmm__mace01_comm1.yml        #Uses mace01_comm1 to do a md run
+        │   └── gen_1__openmm__mace01_comm2.yml        #Uses mace01_comm2 to do a md run
         ├── gen_0/
         │   ├── traj/
         │   │   ├── [label]_mace01_comm/
@@ -118,34 +124,31 @@ MACE_PIPELINE/
         └── ...
 ```
 
+#### Directory Conventions
+>MACE models: `root/models/[label]/gen[n]/mace[model].<ext>` \
+MD Trajectories: `root/models/[label]/gen[n]/traj/[<label>]_mace[model]/[$openmm_files]`\
+Gen[n] Dataset: `root/dataset/[label.path]/gen[n]/[label]_train__[operation]__gen[n]_[frames_count]__[mace_model].xyz`
 
-## Database Information(Not implemented yet)
-In database `[label]` represents a unique dataset. No two dataset will have same label. This label is identifies by `--label` flags to assosciate the operations.
+**Note `[mace_model]` is just mace version not committee name, since it doesn't makes sense ot name it from committee name**
 
-###  Development Notes
-There might be additions more blocks depending on the requirement and most probably will be suffixed on end
+### Explanation of pipeline execution
 
-### `raw_dataset` block
+`pipeline_sample.yml`
 ```
-CREATE TABLE "raw_dataset" (
-	"id"	INTEGER NOT NULL UNIQUE,
-	"time_stamp"	TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	"repr"	TEXT,
-	"label"	TEXT NOT NULL UNIQUE,
-	PRIMARY KEY("id")
-);
+pipeline:
+	- gen0:
+		models_path:
+			- root/models/[label]/configs_mace/gen_0__mace01_comm1.yml
+			- root/models/[label]/configs_mace/gen_0__mace01_comm2.yml
+		md_path:
+			- root/models/[label]/configs_openmm/gen_0__openmm.yml
+		new_dataset_path:
+			- root/dataset/*/[label]_[operation]__gen1__$[count]__mace01.xyz
+	- gen1:
+		...
 ```
 
-### `dataset` block
-Note `label` is not unique
-```
-CREATE TABLE "dataset" (
-	"id"	INTEGER NOT NULL UNIQUE,
-	"time_stamp"	TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	"repr"	TEXT,
-	"label"	TEXT NOT NULL,
-	"operation"	TEXT NOT NULL,
-	PRIMARY KEY("id"),
-	FOREIGN KEY("label") REFERENCES "raw_dataset"("label")
-);
-```
+The `mario.py` cli receives input `pipeline.yml`'s path to flag `--pipeline`. The pipeline config contains array of `gen[n]` entries in `pipeline` key. For example: `config.pipeline = [gen0, gen1, gen2, gen3]`. Each `gen[n]` contains three entries specifiying location of `config` files, in order, for`mace model, md openmm, and location for saving generated new daatset. Above is recommended structure for file handling. Program currently doesn't handles this autmatically.
+
+`mario.py` runs a `files_exists` check on all of these files before execution. The internal modules doesn't check for existence of input file. For example, MACE model config when executing the package itself will throw error if any input files ddoesn't exist. Both `mace-torch` & `mace-openmm` creates required directly themselves.
+
