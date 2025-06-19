@@ -2,10 +2,12 @@
 - [x] Writing cli's for data parsing 
 - [x] Dataset and raw dataset handling 
 - [x] Learn and include `logger`
-- [ ] YAML handling
+- [x] YAML handling
+- [ ] Add fail safe file outputs
 - [ ] Modules for executing pipelines
 - [ ] Top level cli for handling pipeline
 - [ ] Analysis graphers
+- [ ] Multi processing
 
 # File naming convention
 
