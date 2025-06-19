@@ -106,7 +106,7 @@ def calculate(db, key: dict, calculator: str, atoms: list[str]):
 
 def write_configs(*db_lists: list[tuple[Path, list]]):
     for path, db in db_lists:
-        path.parent.mkdir()
+        path.parent.mkdir(parents = True)
         log.info("Writing to %s", str(path))
         write(path, db)
 
