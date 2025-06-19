@@ -25,7 +25,7 @@ class XTBCalculator(Calculator):
     def calculate(self, configs):
         log.info("Starting XTB calculations. This may take a while")
         for i, at in enumerate(configs):
-            log.debug("Calculating for atom %d %s", i, ", ".join(f"{k}={v}" for k, v in at.info.items()))
+            log.debug("Calculating for ase.Atoms[%d].info = %s", i, ", ".join(f"{k}={v}" for k, v in at.info.items()))
             at.pbc = False
             at.calc = self.xtb
             at.info[xtb_energy_key] = at.get_potential_energy()
