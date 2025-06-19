@@ -12,7 +12,10 @@ def yaml_reader(path: str):
 def get_args(cfg: dict):
     args = []
     for key in cfg.keys():
-        args += [f'--{key}', str(cfg[key])]
+        if cfg[key]==True:
+            args += [f'--{key}']
+        else:
+            args += [f'--{key}', str(cfg[key])]
     return args
 
 def run(args: list[str]):
