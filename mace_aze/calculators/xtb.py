@@ -13,8 +13,8 @@ class XTBCalculator(Calculator):
     def __init__(self, method:str = DEFAULT_XTB_METHOD):
         super().__init__()
         log.info("Instantiating XTB calculator")
-        log.debug("XTB calculator using: method: %s", method)
-        self.xtb = XTB(method)
+        log.debug("XTB calculator using method: %s", method)
+        self.xtb = XTB(method=method)
     
     @staticmethod
     def remove_calc(configs):
