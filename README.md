@@ -9,6 +9,10 @@
 - [ ] Analysis graphers
 - [ ] Multi processing
 
+# Important Instructions
+ - Make sure the current working directory is always set to the root directory
+ - Any path for any file in any configs should be relative to current working directory
+
 # File naming convention
 
 Syntax: 

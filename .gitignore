@@ -6,6 +6,7 @@
 *.sqlite3
 
 *.xyz
+*.txt
 
 /dataset/
 /raw_dataset/
@@ -16,3 +17,5 @@
 /pipelines/
 /bash_scripts/
 /tmp/
+
+
