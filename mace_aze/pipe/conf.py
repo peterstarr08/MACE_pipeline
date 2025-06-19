@@ -14,5 +14,5 @@ available_calc = ['xtb']
 available_sampler = ['nikhil', 'full']
 
 md_run_openmm_cli = [
-     "micromamba", "run", "-n", "mace-opnemm", "mace-md"
+     "/home/parth/micromamba/envs/mace-openmm/bin/mace-md"
 ]
