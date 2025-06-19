@@ -20,6 +20,7 @@ def get_args(cfg: dict):
     return args
 
 def run(args: list[str]):
+    lg.info("Arguments: %s", " ".join(args))
     subprocess.run(md_run_openmm_cli + args, check=True)
 
 def mace_md(conf_path: str):
