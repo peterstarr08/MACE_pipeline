@@ -13,6 +13,15 @@ from mace_aze.pipe.md_runner import get_args
             },
             ["--key0","123","--key1","Hello","--key2","32"]
         ),
+        (
+            {
+                "key0": 123,
+                "key1": "Hello",
+                "key2": 32,
+                "key4": True
+            },
+            ["--key0","123","--key1","Hello","--key2","32", "--key4"]
+        ),
         pytest.param(
             {
                 "key0": 123,
