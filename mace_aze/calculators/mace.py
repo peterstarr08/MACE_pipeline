@@ -38,6 +38,7 @@ class MACEculator(Calculator):
 
     def calculate(self, configs):
         log.info("Beginning MACE committe calculations")
+        log.debug("Cofigs size: %d", len(configs))
         for i, at in enumerate(configs):
             at.calc = self.mace_calc
             engs = at.get_potential_energies()
