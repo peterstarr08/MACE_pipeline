@@ -11,7 +11,7 @@ def arg_parse():
 
 def main():
     args = arg_parse()
-    log.info("Beginning fixing MACE model at %s", arg_parse.model_path)
+    log.info("Beginning fixing MACE model at %s", args.model_path)
     fix_atomic_energies_shape(args.model_path)
     log.info("Done!!")
 
