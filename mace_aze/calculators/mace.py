@@ -15,12 +15,17 @@ mace_max_force_std = 'max_force_std'
 class MACEculator(Calculator):
     def __init__(self, model_paths: list[str], device: str = 'cuda'):
         super().__init__()
-        if len(model_paths) <= 0:
+        if len(model_paths) == 0:
             log.critical("No MACE calculators provided")
             raise RuntimeError("MACE calculator required. Pass model with .model extension")
+
         log.info("Models provided %s", str(model_paths))
-        self.mace_calc = MACECalculator(model_paths=model_paths, device=device)
-        self.total_calc = len(model_paths)
+        
+        # Use separate calculator instances for each model
+        self.calculators = [
+            MACECalculator(model_paths=[path], device=device) for path in model_paths
+        ]
+        self.total_calc = len(self.calculators)
 
     @staticmethod
     def remove_calc(configs):
@@ -51,9 +56,8 @@ class MACEculator(Calculator):
             energies = []
             forces = []
 
-            for i, model in enumerate(self.mace_calc.models):
-                self.mace_calc.model = model
-                at.calc = self.mace_calc
+            for i, calc in enumerate(self.calculators):
+                at.calc = calc
                 energy = at.get_potential_energy()
                 force = at.get_forces()
 
