@@ -15,25 +15,28 @@ mace_max_force_std = 'max_force_std'
 class MACEculator(Calculator):
     def __init__(self, model_paths: list[str], device: str = 'cuda'):
         super().__init__()
-        if len(model_paths)<=0:
+        if len(model_paths) <= 0:
             log.critical("No MACE calculators provided")
             raise RuntimeError("MACE calculator required. Pass model with .model extension")
         log.info("Models provided %s", str(model_paths))
         self.mace_calc = MACECalculator(model_paths=model_paths, device=device)
         self.total_calc = len(model_paths)
+
     @staticmethod
     def remove_calc(configs):
         for at in configs:
             at.calc = None
 
     @staticmethod
-    def max_force_variance(at):
-        '''Written by ChatGPT. Must check for validation. Formula based NIkhil Boi papers'''
-        forces = at.get_forces()  # shape: (n_models, n_atoms, 3)
-        mean_forces = np.mean(forces, axis=0)  # shape: (n_atoms, 3)
-        diffs = forces - mean_forces  # shape: (n_models, n_atoms, 3)
-        squared_norms = np.sum(diffs**2, axis=2)  # shape: (n_models, n_atoms)
-        var_per_atom = np.mean(squared_norms, axis=0)  # shape: (n_atoms,)
+    def compute_force_variance(forces):
+        """
+        forces: (n_models, n_atoms, 3)
+        Returns max variance across atoms
+        """
+        mean_forces = np.mean(forces, axis=0)                  # (n_atoms, 3)
+        diffs = forces - mean_forces                           # (n_models, n_atoms, 3)
+        squared_norms = np.sum(diffs**2, axis=2)               # (n_models, n_atoms)
+        var_per_atom = np.mean(squared_norms, axis=0)          # (n_atoms,)
         return np.max(var_per_atom)
 
     def calculate(self, configs):
@@ -41,39 +44,36 @@ class MACEculator(Calculator):
         log.debug("Configs size: %d", len(configs))
 
         for at_idx, at in enumerate(configs):
+            if len(at) == 0:
+                log.warning("Skipping empty config at index %d", at_idx)
+                continue
+
             energies = []
             forces = []
 
-            # Compute energy and forces from each model individually
             for i, model in enumerate(self.mace_calc.models):
                 self.mace_calc.model = model
                 at.calc = self.mace_calc
                 energy = at.get_potential_energy()
                 force = at.get_forces()
+
                 energies.append(energy)
                 forces.append(force)
                 at.info[f'{mace_energy_key}_{i}'] = energy
 
-            energies = np.array(energies)
-            forces = np.array(forces)
+            energies = np.array(energies)  # (n_models,)
+            forces = np.array(forces)      # (n_models, n_atoms, 3)
 
-            # Stats
             at.info[mace_energy_variance_key] = np.std(energies)
             at.info[mace_avg_energy_key] = np.mean(energies)
 
-            # Force variance across models
-            mean_forces = np.mean(forces, axis=0)
-            diffs = forces - mean_forces
-            squared_norms = np.sum(diffs**2, axis=2)
-            var_per_atom = np.mean(squared_norms, axis=0)
-            max_force_var = np.max(var_per_atom)
-
+            max_force_var = self.compute_force_variance(forces)
             at.info[mace_max_force_variance] = max_force_var
             at.info[mace_max_force_std] = np.sqrt(max_force_var)
 
             log.debug("configs[%d]  CommEnergies %s EnergyVariance %f  EnergyAvg %f    MaxFVar %f  MaxFStd %f",
-                    at_idx, str(energies), at.info[mace_energy_variance_key], at.info[mace_avg_energy_key],
-                    at.info[mace_max_force_variance], at.info[mace_max_force_std])
+                      at_idx, str(energies), at.info[mace_energy_variance_key], at.info[mace_avg_energy_key],
+                      at.info[mace_max_force_variance], at.info[mace_max_force_std])
 
         log.info("Calculations completed. Removing calculator")
         MACEculator.remove_calc(configs)
