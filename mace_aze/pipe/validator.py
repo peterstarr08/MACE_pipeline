@@ -1,31 +1,29 @@
 from .conf import (
     pipeline,
+
     generation,
+
     models_path,
     md_path,
-    new_ds
+    new_ds,
+
+    meta,
+    calc,
+    sampler
 )
-from mace_aze.config import ROOT, pipeline_path
 from mace_aze.log.conf import get_logger
 log = get_logger(__name__)
 
 
-def check_exists(path: str):
-    log.info("Looking for %s", str(pipeline_path/path))
-    if (pipeline_path/path).exists():
-        log.info("File found!")
-        return
+def validate_backward_dependencies(order, dependencies):
+    for key in order:
+        depend = dependencies.get(key, [])
+        for d in depend:
+            if d not in order:
+                log.critical("%s requires %s", key, d)
+                raise SyntaxError("Invalid syntax")
+
     
-    log.debug("No files at %s", str(pipeline_path/path))
-    log.debug("Looking for %s", str(ROOT/path))
-    
-    if (ROOT/path).exists():
-        log.info("File found!")
-        return
-    else:
-        log.critical("No file found at %s or %s. Throwing FileNotFoundError", str(pipeline_path/path), str(ROOT/path))
-        raise FileNotFoundError(f'{pipeline_path/path} or {ROOT/path} doesn\'t exist')
-         
 # To add meta data checking
 def validate_yml(cfg: dict):
     log.info("Validating the pipeline flow")
@@ -37,20 +35,35 @@ def validate_yml(cfg: dict):
         raise SyntaxError("Bad YAML!")
 
     if gens <= 0:
-        log.critical("No generations found. Use correct labelling")
+        log.critical("No generations found. No pipeline found.")
+        raise SystemError("Invalid pipeline syntax")
+    
     log.info("Found %d generations", gens)
 
     for i, g in enumerate(cfg[pipeline]):
-        log.info("Validing %s%d", generation, i)
-        for key in [models_path, md_path, new_ds]:
-            if key not in g[f'{generation}{i}']:
-                log.critical("%s not provided in gen%d", key, i)
-                raise SyntaxError("Bad YAML!")
-            if len(g[f'{generation}{i}'])<=0:
-                log.critical("No paths provided in %s for gen%d", key, i)
-                raise ValueError("Incomplete YAML!")
-            for path in g[f'{generation}{i}']:
-                check_exists(path)
+        log.info("Validating %s%d", generation, i)
+
+        gen_keys = list(g[f'{generation}{i}'].keys())
+
+        dependencies= {
+            new_ds: [md_path],
+            md_path: [models_path],
+            models_path: []
+        }
+
+        validate_backward_dependencies(gen_keys, dependencies=dependencies)
+    
+    #Cheking metadata now
+    if meta not in cfg:
+        log.critical("No %s provided in pipeline", meta)
+        raise SyntaxError("Invalid pipeline syntax")
+    
+    for meta_key in [calc, sampler]:
+        if meta_key not in cfg[meta]:
+            log.critical("No %s was provided", meta_key)
+            raise SyntaxError("Invalid pipeline syntax")
+        
+
 
             
             
