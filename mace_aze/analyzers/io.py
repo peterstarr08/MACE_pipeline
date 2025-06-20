@@ -7,7 +7,9 @@ log = get_logger(__name__)
 
 def read_trajectory(path: str):
     log.info("Reading trajectory at %s", path)
-    return read(path)
+    db = read(path, ':')
+    log.info("Read %d configs from  %s", len(db), path)
+    return db
 
 def find_md_log(path: str):
     path = Path(path)
