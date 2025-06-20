@@ -18,6 +18,7 @@ class MACEculator(Calculator):
         if len(model_paths)<=0:
             log.critical("No MACE calculators provided")
             raise RuntimeError("MACE calculator required. Pass model with .model extension")
+        log.info("Models provided %s", str(model_paths))
         self.mace_calc = MACECalculator(model_paths=model_paths, device=device)
         self.total_calc = len(model_paths)
     @staticmethod
@@ -37,7 +38,7 @@ class MACEculator(Calculator):
 
     def calculate(self, configs):
         log.info("Beginning MACE committe calculations")
-        for at in configs:
+        for i, at in enumerate(configs):
             at.calc = self.mace_calc
             engs = at.get_potential_energies()
             for i in range(self.total_calc):
@@ -46,6 +47,7 @@ class MACEculator(Calculator):
             at.info[mace_avg_energy_key] = np.average(engs)
             at.info[mace_max_force_variance] = MACEculator.max_force_variance(at)
             at.info[mace_max_force_std] = np.sqrt(at.info[mace_max_force_variance])
+            log.debug("configs[%d]  CommEnergies %s EnergyVariance %f  EnergyAvg %f    MaxFVar %f  MaxFStd %f", i, str(engs), at.info[mace_energy_variance_key], at.info[mace_avg_energy_key], at.info[mace_max_force_variance], at.info[mace_max_force_std])
         log.info("Calculations completed. Removing calculator")
         MACEculator.remove_calc(configs)
         log.info("Calculators removed")
