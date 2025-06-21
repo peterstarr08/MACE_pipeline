@@ -42,4 +42,5 @@ def comm_eval(model_paths: list[str], traj_path: list[str]):
     out_path = get_write_path(traj_path)
     log.info("Writing %s", str(out_path))
     write(out_path, traj)
+    log.info("Job done!")
     
