@@ -9,7 +9,7 @@ def arg_parse():
 
 def main():
     args = arg_parse()
-    comm_eval(models_path=args.models_path, traj_path=args.traj_path)
+    comm_eval(model_paths=args.models_path, traj_path=args.traj_path)
 
 
 if __name__=="__main__":
