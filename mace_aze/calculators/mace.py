@@ -61,7 +61,7 @@ class MACEculator(Calculator):
                 energy = at.get_potential_energy()
                 force = at.get_forces()
 
-                log.debug("configs[%d] model[%d] forces (first 3 atoms): %s", at_idx, i, np.array2string(force[:3], precision=4))
+                # log.debug("configs[%d] model[%d] forces (first 3 atoms): %s", at_idx, i, np.array2string(force[:3], precision=4))
 
                 energies.append(energy)
                 forces.append(force)

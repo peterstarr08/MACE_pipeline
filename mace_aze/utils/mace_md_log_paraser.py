@@ -1,6 +1,6 @@
 import csv
 import numpy as np
-from ..io import find_md_log
+from mace_aze.utils.io import find_md_log
 
 def parse_md_out_log(filepath):
     table = []

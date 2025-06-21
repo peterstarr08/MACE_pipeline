@@ -10,8 +10,8 @@ from mace_aze.calculators.mace import (
     mace_max_force_variance,
     mace_max_force_std
 )
-from .io import read_trajectory
-from .util.mace_md_log_paraser import get_temp
+from mace_aze.utils.io import read_trajectory
+from mace_aze.utils.mace_md_log_paraser import get_temp
 
 log = get_logger(__name__)
 

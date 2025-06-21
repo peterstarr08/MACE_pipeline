@@ -2,6 +2,7 @@ from .validator import validate_yml
 from .trainer import train_mace
 from .md_runner import mace_md
 from ._model_fixer import fix_atomic_energies_shape
+from .committee_eval import comm_eval
 
 from .conf import(
     pipeline,
@@ -16,6 +17,7 @@ __all__ = [
     train_mace,
     mace_md,
     fix_atomic_energies_shape,
+    comm_eval,
     pipeline,
     generation,
     models_path,
