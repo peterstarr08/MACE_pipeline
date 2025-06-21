@@ -41,7 +41,7 @@ def main():
     if args.prev_dataset is not None:
         log.info("Previous dataset provided. Reading %s", args.prev_dataset)
         dataset = read(args.prev_dataset, ':')
-        log.debug("Successfully read %s", args.prev_dataset)
+        log.info("Successfully read %d configs", len(dataset))
 
     log.info("Sampling method: %s", args.method)
     if args.method=='nikhilboi':
@@ -56,6 +56,7 @@ def main():
         XTBCalculator().calculate(traj)
 
     dataset = dataset + traj
+    log.info("Total dataset size: %d", len(dataset))
     out_path = Path(args.out)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     log.info("Writing to %s", str(out_path))
