@@ -51,7 +51,7 @@ def frame2xyz(frames_dir: str, out: str, count: int = -1):
     log.info("Writing to %s", str(out_path))
     if out_path.exists():
         log.warning("A file already exist at given out path. Overwriting it")
-    out_path.mkdir(parents=True, exist_ok=True)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
     write(out_path, db)
     log.info("Done !!!")
 
