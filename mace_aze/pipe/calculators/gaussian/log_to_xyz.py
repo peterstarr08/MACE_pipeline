@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 
 from ase import Atoms
 from ase.io import write
@@ -49,7 +50,7 @@ def log_to_xyz(log_dir: str, xyz_file: str):
     log.info("Given search directory: %s", str(log_path))
 
     db = []
-    log_files = sorted(log_path.glob("*.log"))
+    log_files = sorted(log_path.glob("*.log"), key=lambda f: int(re.search(r'\d+', f.name).group()))
 
     for log_file in log_files:
         db.append(convert_to_atoms(log_file))

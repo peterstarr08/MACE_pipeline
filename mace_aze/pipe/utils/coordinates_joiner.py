@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 
 from ase.io import read, write
 
@@ -9,7 +10,7 @@ log = get_logger(__name__)
 def dir_join(dir_path: Path):
     log.info("Globbing all files from %s", str(dir_path))
     
-    files = sorted([f for f in dir_path.glob('*') if f.is_file()])
+    files = sorted([f for f in dir_path.glob('*') if f.is_file()],  key=lambda f: int(re.search(r'\d+', f.name).group()))
     db = []
 
     for frame in files:

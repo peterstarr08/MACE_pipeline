@@ -1,5 +1,6 @@
 from numpy import linspace
 from pathlib import Path
+import re
 
 from ase.io import read, write
 
@@ -24,7 +25,7 @@ def frame2xyz(frames_dir: str, out: str, count: int = -1):
 
     log.info("Checking directory %s", str(frames_path))
 
-    files = sorted(frames_path.glob("*"))                    # Globs every shit
+    files = sorted(frames_path.glob("*"), key=lambda f: int(re.search(r'\d+', f.name).group()))                    # Globs every shit
     log.info("Found %d files", len(files))
 
     if count>0 and len(files)>=count:

@@ -17,7 +17,7 @@ def split_db(db, ratio):
     train_set = [db[i] for i in train_indices]
 
     all_indices = set(range(total))
-    test_indices = sorted(all_indices - set(train_indices))
+    test_indices = sorted(all_indices - set(train_indices)) #Hopefully sorts numerically
     test_set = [db[i] for i in test_indices]
 
     log.debug("Train Indices: %s", str(train_indices))
