@@ -27,14 +27,21 @@ def frame2xyz(frames_dir: str, out: str, count: int = -1):
     files = sorted(frames_path.glob("*"))                    # Globs every shit
     log.info("Found %d files", len(files))
 
+    if count>0 and len(files)>=count:
+        log.info("Generatinf indices to select %d frames", count)
+        indx = linspace(0, len(files), count, dtype=int, endpoint=False)
+        files = [path for i, path in enumerate(files) if i in indx]
+        log.debug("Final files count %d", len(files))
+
+
     db = read_frames(files)
     log.info("Read %d configs", len(db))
 
-    if count>0:
-        log.info("Selecting %d frames", count)
-        indx = linspace(0, len(db), count, dtype=int, endpoint=False)
-        db = [db[i] for i in indx]
-        log.debug("Final configs size %d", len(db))
+    # if count>0:
+    #     log.info("Selecting %d frames", count)
+    #     indx = linspace(0, len(db), count, dtype=int, endpoint=False)
+    #     db = [db[i] for i in indx]
+    #     log.debug("Final configs size %d", len(db))
 
     log.info("Writing to %s", str(out_path))
     if out_path.exists():
