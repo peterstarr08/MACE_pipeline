@@ -13,7 +13,7 @@ def dir_join(dir_path: Path):
     db = []
 
     for frame in files:
-        db = db + [read(frame, ':', format='extxyz')]
+        db = db + read(frame, ':', format='extxyz')
 
     log.info("Files found total: %d", len(files))
     log.info("Configs converted: %d", len(db))
@@ -21,7 +21,10 @@ def dir_join(dir_path: Path):
     return db
 
 def file_join(paths: list[Path]):
-    db = [read(p, ':', format='extxyz') for p in paths if p.exists()]
+    db = []
+    for p in paths:
+        if p.exists():
+            db = db + read(p, ':', format='extxyz')
     log.info("Configs converted: %d", len(db))
 
     return db
@@ -30,7 +33,7 @@ def join(paths: list[str], out: str):
     if len(paths)==1:
         log.info("Looks like you gave a directory. Checking") 
 
-        if paths.is_dir():
+        if paths[0].is_dir():
             log.info("Yupp, it's a directory. Processing to combine all frames inside this folder into single file")
             db = dir_join(Path(paths))
         else:

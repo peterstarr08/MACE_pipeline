@@ -19,7 +19,7 @@ def xyz_to_com(xyz_file: str, output_dir: str, method: str, basis: str, charge=0
     log.debug("Read %d frames", len(frames))
 
     for i, atoms in enumerate(frames):
-        log.debug("Generating f'frame_%d.com", i)
+        log.debug("Generating frame_%d.com", i)
         com_path = os.path.join(output_dir, f'frame_{i}.com')
         with open(com_path, 'w') as f:
             f.write(f"%chk=frame_{i}.chk\n")
