@@ -17,7 +17,7 @@ def arg_parse():
     parser.add_argument('--threshold', type=float, default=-1.0, help="Threshold for sampling. Required by 'nikhil")
     parser.add_argument('--count', type=int, default=-1, help="Number of samples to choose. Required  by 'top'")
     parser.add_argument('--prev-dataset', type=str, default=None, required=True, help="Add path to dataset you want to append to.")
-    parser.add_argument('--calculator', type=str, choices=['xtb'], default='xtb', help="Calcaultor to evaluate the selected configurations")
+    parser.add_argument('--calculator', type=str, choices=['xtb', 'gaussian'], default='xtb', help="Calcaultor to evaluate the selected configurations")
     parser.add_argument('--out', type=str, required=True, help="Path to saving the .xyz file")
     return parser.parse_args()
 
