@@ -23,6 +23,10 @@ def frame2xyz(frames_dir: str, out: str, count: int = -1):
     frames_path = Path(frames_dir).resolve(strict=True)
     out_path = Path(out)
 
+    if not out_path.suffix:
+        log.critical("Given output path is not a file")
+        raise ValueError("Invalid path")
+
     log.info("Checking directory %s", str(frames_path))
 
     files = sorted(frames_path.glob("*"), key=lambda f: int(re.search(r'\d+', f.name).group()))                    # Globs every shit
