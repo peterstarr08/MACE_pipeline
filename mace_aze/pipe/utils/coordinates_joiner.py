@@ -49,3 +49,4 @@ def join(paths: list[str], out: str):
         log.warning("Files exists at %s, overwtiting it", out)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     write(out_path, db)
+    log.info("Done !!!")

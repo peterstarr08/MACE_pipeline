@@ -25,3 +25,11 @@ pipeline_path = ROOT/PIPELINE_DIR
 #Uniform Selector key
 us_0_selected = "us_0"
 us_off_selected = "us_offset"
+
+
+
+#==================CLI v2======================================================
+
+#Splitter keys
+uniform_key = 'uniform'
+split_methods = [uniform_key]
