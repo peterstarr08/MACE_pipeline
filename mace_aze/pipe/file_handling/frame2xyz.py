@@ -1,3 +1,4 @@
+from numpy import linspace
 from pathlib import Path
 
 from ase.io import read, write
@@ -17,7 +18,7 @@ def read_frames(paths: list[Path]):
             continue
     return db
 
-def frame2xyz(frames_dir: str, out: str):
+def frame2xyz(frames_dir: str, out: str, count: int = -1):
     frames_path = Path(frames_dir).resolve(strict=True)
     out_path = Path(out)
 
@@ -28,6 +29,12 @@ def frame2xyz(frames_dir: str, out: str):
 
     db = read_frames(files)
     log.info("Read %d configs", len(db))
+
+    if count>0:
+        log.info("Selecting %d frames", count)
+        indx = linspace(0, len(db), count, dtype=int, endpoint=False)
+        db = [db[i] for i in indx]
+        log.debug("Final configs size %d", len(db))
 
     log.info("Writing to %s", str(out_path))
     if out_path.exists():

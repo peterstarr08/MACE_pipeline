@@ -1,6 +1,6 @@
 import argparse
 
-from mace_aze.pipe.gaussian.log_to_xyz import log_to_xyz
+from mace_aze.pipe.calculators.gaussian.log_to_xyz import log_to_xyz
 
 def arg_parse():
     parser = argparse.ArgumentParser(description="Converts all gaussian output files to single .xyz files with forces and energy labelled")

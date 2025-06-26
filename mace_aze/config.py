@@ -33,3 +33,7 @@ us_off_selected = "us_offset"
 #Splitter keys
 uniform_key = 'uniform'
 split_methods = [uniform_key]
+
+#Calculator keys
+xtb_key = 'xtb'
+# calc_keys = [xtb_key]

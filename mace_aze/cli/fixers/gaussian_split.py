@@ -1,6 +1,6 @@
 import argparse
 
-from mace_aze.pipe.gaussian.xyz_to_com import xyz_to_com
+from mace_aze.pipe.calculators.gaussian.xyz_to_com import xyz_to_com
 
 method_choice = ['B3LYP']
 method_basis = ['6-31G(d)']
