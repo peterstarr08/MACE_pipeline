@@ -33,8 +33,8 @@ def uniform_split(file_path: Path, count: int, out_dir: Path):
         out_dir = out_dir.parent
     
     out_dir.mkdir(parents=True, exist_ok=True)
-    db1_path = out_dir/f"{file_name}_extract_1.xyz"
-    db2_path = out_dir/f"{file_name}_extract_2.xyz"
+    db1_path = out_dir/f"{file_name}_train.xyz"
+    db2_path = out_dir/f"{file_name}_test.xyz"
      
     log.info("Writing to %s", str(db1_path))
     write(db1_path, db_1, format='extxyz')
