@@ -76,7 +76,13 @@ MACE_PIPELINE/
                     └── methanol_50_cutoff_test__dataset__cp2k.xyz
 ```
 
-## [Active learning directory](https://tree.nathanfriend.com/?s=(%27options!(%27fancy!true~fullPath!false~trailingSlash!true~rootDot!false)~source!(%27source!%27MACE_PIPELINE%5Cn7Z4configs_mace478TQ_0V51WTQ_0V52WTQ_1V51WTY4configs_openmm478TQ_0VopenmmV51q1K*Q_1VopenmmV52q2KZ0W4Z1W%5Cn7X4benzene47cutT10T7train-XVwJ**BtestT*8_testVXVwJ**%20BQ1%2F-w6J-w6VG1J-w6VG2JT*Y-cp2k6J-cp2k6VG1J-cp2k6VG2JT7Q2%2F-wVQ2HJ-wVQ2HVG1JT*Y%5Cn7models4847Q_0TtrajTR59R59R%22951F52F53FYT%221F%222FY47Q_1T51F52F53.modellTYTY47gem_2TY47Y%27)~version!%271%27)*77-T*8_trainV4%5Cn*5G1_comm6VQ1H7%20%208benzene_cut_109T*%3COpenMM%20files%3ETB%23%20Q%200%3A%20original%20train%20XT7F.modelTGmace0H_%5B%24count%5DJ.xyzK%20to%20do%20a%20md%20run4QgenR7%5Blabel%5D_T4*V__W.ymlXdatasetY...ZpipelineqW**%23Uses%205wxtb%22G2_comm%01%22wqZYXWVTRQKJHGFB987654-*) | Single job queue with only 1 md run
+## CLIs
+`mace_aze.cli.file_handling`
+
+
+### 
+
+## [Active learning directory](https://tree.nathanfriend.com/?s=(%27options!(%27fancy!true~fullPath!false~trailingSlash!true~rootDot!false)~source!(%27source!%27MACE_PIPELINE%5Cn7Z4configs_mace478TQ_0V51WTQ_0V52WTQ_1V51WTY4configs_openmm478TQ_0VopenmmV51q1K*Q_1VopenmmV52q2KZ0W4Z1W%5Cn7X4benzene47cutT10T7train-XVwJ**BtestT*8_testVXVwJ**%20BQ1%2F-w6J-w6VG1J-w6VG2JT*Y-cp2k6J-cp2k6VG1J-cp2k6VG2JT7Q2%2F-wVQ2HJ-wVQ2HVG1JT*Y%5Cn7models4847Q_0TtrajTR59R59R%22951F52F53FYT%221F%222FY47Q_1T51F52F53.modellTYTY47gem_2TY47Y%27)~version!%271%27)*77-T*8_trainV4%5Cn*5G1_comm6VQ1H7%20%208benzene_cut_109T*%3COpenMM%20files%3ETB%23%20Q%200%3A%20original%20train%20XT7F.modelTGmace0H_%5B%24count%5DJ.xyzK%20to%20do%20a%20md%20run4QgenR7%5Blabel%5D_T4*V__W.ymlXdatasetY...ZpipelineqW**%23Uses%205wxtb%22G2_comm%01%22wqZYXWVTRQKJHGFB987654-*) | Single job queue with only 1 md run (Not doing anymore. Automation will be removed)
 
 ```
 MACE_PIPELINE/
