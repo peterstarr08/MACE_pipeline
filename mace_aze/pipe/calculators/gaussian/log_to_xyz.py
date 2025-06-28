@@ -4,7 +4,7 @@ import re
 from ase import Atoms
 from ase.io import write
 from ase.units import Hartree, Bohr
-from cclib.io import ccread
+from cclib.io import ccopen
 
 from mace_aze.log.conf import get_logger
 
@@ -17,7 +17,12 @@ def validate(log_path: Path):
 
 def convert_to_atoms(log_frame: Path):
     log.debug("Reading %s", str(log_frame))
-    data = ccread(log_frame)
+    try:
+        parser = ccopen(str(log_frame))
+        data = parser.parse(['atomcoords', 'atomnos', 'scfenergies', 'grads'])
+    except Exception as e:
+        log.warning("Skipping %s due to parse error: %s", str(log_frame), e)
+        return None
 
     if data is None:
         log.critical("Empty file or prase error for %s", str(log_frame))
