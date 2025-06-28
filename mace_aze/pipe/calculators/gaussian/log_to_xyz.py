@@ -106,7 +106,7 @@ def log_to_xyz(log_dir: str, xyz_file: str):
 
     log.info("Found %d files ending with .log", len(log_files))
     log.info("Successfully converted %d configs", len(db))
-    log.info("Lost %d configs", len(log_file) - len(db))
+    log.info("Lost %d configs", len(log_files) - len(db))
 
 
     if xyz_path.exists():
