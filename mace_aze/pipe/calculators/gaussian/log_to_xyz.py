@@ -43,6 +43,8 @@ def convert_to_atoms(log_frame: Path):
     atoms = Atoms(numbers=num, positions=pos)
     atoms.arrays['forces_gauss'] = forces_ev_A
     atoms.info['energy_gauss'] = energy_ev
+    
+    log.debug("Successfully read %s", str(log_frame))
 
     return atoms
 
