@@ -24,6 +24,8 @@ def uniform_split(file_path: Path, count: int, out_dir: Path):
         return
     
     indx = linspace(0, len(db), count * 2, dtype=int, endpoint=False)
+    log.debug("Selected indices: %s", str(indx))
+
     db_1 = [db[i] for i in indx if i % 2]
     db_2 = [db[i] for i in indx if i % 2 == 0]
 
@@ -56,5 +58,3 @@ def splitter(file_path: str, method: str, count: int, out_dir: str):
         uniform_split(file_path=file_path, count=count, out_dir=out_dir)
     else:
         log.info("If you see this then something went wrong in parsing")
-    
-    log.info("Done !!!")
