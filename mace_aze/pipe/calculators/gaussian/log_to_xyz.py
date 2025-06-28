@@ -17,16 +17,18 @@ def validate(log_path: Path):
 
 def convert_to_atoms(log_frame: Path):
     log.debug("Reading %s", str(log_frame))
+    
     try:
         parser = ccopen(str(log_frame))
-        data = parser.parse(['atomcoords', 'atomnos', 'scfenergies', 'grads'])
+        parser.required_attrs = ['atomcoords', 'atomnos', 'scfenergies', 'grads']
+        data = parser.parse()
     except Exception as e:
         log.warning("Skipping %s due to parse error: %s", str(log_frame), e)
         return None
 
     if data is None:
-        log.critical("Empty file or prase error for %s", str(log_frame))
-        raise RuntimeError("Expected valid gaussian output file. File seems like is corrupt")
+        log.warning("Empty or unparsable file: %s", str(log_frame))
+        return None
     
     pos =  data.atomcoords[-1]       # (N_atoms, 3) atomcoords originally is a size 1 array
     num = data.atomnos               # (N_atoms,)
@@ -64,7 +66,9 @@ def log_to_xyz(log_dir: str, xyz_file: str):
     log_files = sorted(log_path.glob("*.log"), key=lambda f: int(re.search(r'\d+', f.name).group()))
 
     for log_file in log_files:
-        db.append(convert_to_atoms(log_file))
+        conf = convert_to_atoms(log_file)
+        if conf is not None:
+            db.append(conf)
 
     log.info("Found %d files ending with .log", len(log_files))
     log.info("Successfully converted %d configs", len(db))
