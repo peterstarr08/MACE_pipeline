@@ -68,12 +68,13 @@ def convert_to_atoms(log_frame: Path):
     energy_ev = data.scfenergies[-1] # Already converts to eV
     
     log.debug("Total atoms %d", len(num))
-    log.debug("Force: %s eV", str(energy_ev))
+    log.debug("Energy: %s eV", str(energy_ev))
 
     if hasattr(data, "grads") and data.grads.size > 0:
         forces_ev_A = data.grads[-1] * (Hartree/Bohr) # Converts to eV / A
     else:
-        raise RuntimeError("Expected force data but didn't found any")
+        log.warning("Expected force data but didn't found any. Skipping")
+        return
     
     atoms = Atoms(numbers=num, positions=pos)
     atoms.arrays['forces_gauss'] = forces_ev_A
@@ -105,6 +106,8 @@ def log_to_xyz(log_dir: str, xyz_file: str):
 
     log.info("Found %d files ending with .log", len(log_files))
     log.info("Successfully converted %d configs", len(db))
+    log.info("Lost %d configs", len(log_file) - len(db))
+
 
     if xyz_path.exists():
         log.warning("A file already exists at %s. Overwriting it", str(xyz_path))
