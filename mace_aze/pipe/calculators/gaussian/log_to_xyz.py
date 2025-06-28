@@ -1,10 +1,11 @@
+from io import StringIO
 from pathlib import Path
 import re
 
 from ase import Atoms
 from ase.io import write
 from ase.units import Hartree, Bohr
-from cclib.io import ccopen
+from cclib.io import ccread
 
 from mace_aze.log.conf import get_logger
 
@@ -15,13 +16,44 @@ def validate(log_path: Path):
         log.critical("Directory %s doesn't exist", log_path)
         raise RuntimeError("Invalid Path")
 
+def remove_gaussian_blob(path: Path) -> str:
+    with path.open() as f:
+        lines = f.readlines()
+
+    cleaned_lines = []
+    i = 0
+    while i < len(lines):
+        # Detect start: a blank line followed by a long paragraph ending in \\@
+        if i + 1 < len(lines) and lines[i].strip() == "":
+            j = i + 1
+            # Look for a paragraph (no newlines in between)
+            blob = []
+            while j < len(lines) and lines[j].strip() != "":
+                blob.append(lines[j])
+                if lines[j].strip().endswith("\\@"):
+                    break
+                j += 1
+
+            if blob and blob[-1].strip().endswith("\\@"):
+                # Skip: blank line + blob + two more lines (if blank)
+                i = j + 1
+                if i < len(lines) and lines[i].strip() == "":
+                    i += 1
+                if i < len(lines) and lines[i].strip() == "":
+                    i += 1
+                continue  # skip this chunk
+        # Keep line
+        cleaned_lines.append(lines[i])
+        i += 1
+
+    return ''.join(cleaned_lines)
+
 def convert_to_atoms(log_frame: Path):
     log.debug("Reading %s", str(log_frame))
     
     try:
-        parser = ccopen(str(log_frame))
-        parser.required_attrs = ['atomcoords', 'atomnos', 'scfenergies', 'grads']
-        data = parser.parse()
+        cleaned = remove_gaussian_blob(log_frame)
+        data = ccread(StringIO(cleaned))
     except Exception as e:
         log.warning("Skipping %s due to parse error: %s", str(log_frame), e)
         return None
@@ -29,6 +61,7 @@ def convert_to_atoms(log_frame: Path):
     if data is None:
         log.warning("Empty or unparsable file: %s", str(log_frame))
         return None
+
     
     pos =  data.atomcoords[-1]       # (N_atoms, 3) atomcoords originally is a size 1 array
     num = data.atomnos               # (N_atoms,)
