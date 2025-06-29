@@ -12,6 +12,10 @@ def plot(db: list, energy_key: str, out_path: Path):
     indices = []
 
     for i, frame in enumerate(db):
+        #        at.info['config_type'] = 'IsolatedAtom'
+        if 'config_type' in frame.info and frame.info['config_type']=='IsolatedAtom':
+            log.debug("Frame at index %d is Isolated Atom. Skipping")
+            continue
         energy = frame.info[energy_key]
         if energy is None:
             log.warning("Energy key '%s' not found in frame %d, skipping.", energy_key, i)
