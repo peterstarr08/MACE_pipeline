@@ -18,6 +18,8 @@ def plot(db: list, energy_key: str, out_path: Path):
             continue
         energies.append(energy)
         indices.append(i)
+    
+    log.debug("Indices: %d  Energies: %d", len(indices), len(energies))
 
     if not energies:
         log.error("No valid energies found with key '%s'.", energy_key)
