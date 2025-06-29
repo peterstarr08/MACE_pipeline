@@ -45,6 +45,6 @@ def xyz_to_com(xyz_file: str, output_dir: str, method: str, basis: str, split: i
                     x, y, z = atom.position
                     f.write(f"{sym}  {x:.6f}  {y:.6f}  {z:.6f}\n")
                 f.write("\n")
-        log.info("Written from %d to %d", start, end)
+        log.info("Written frames from %d to %d", start, end-1)
     
     log.info("Done !!!")
