@@ -10,7 +10,7 @@ from .base import Selector
 log = get_logger(__name__)
 
 class FPS(Selector):
-    def __init__(self, atoms,  r_cut = 5.0, n_max = 8.0, l_max = 6.0):
+    def __init__(self, atoms,  r_cut = 5.0, n_max = 8, l_max = 6):
         super().__init__()
         self.atoms = atoms
         self.r_cut = r_cut
@@ -21,7 +21,7 @@ class FPS(Selector):
                     n_max=self.n_max,
                     l_max=self.l_max
                 )
-        log.debug("Instantiated FPS with Atoms: %s  r_cut: %f   n_max: %f   l_max: %f", str(atoms), r_cut, n_max, l_max)
+        log.debug("Instantiated FPS with Atoms: %s  r_cut: %f   n_max: %d   l_max: %d", str(atoms), r_cut, n_max, l_max)
 
     def select(self, configs, nframe):
         if len(configs)<nframe:
