@@ -9,6 +9,7 @@ log = get_logger(__name__)
 
 def fps_select(
         configs_path: str,
+        atoms: list[str],
         count: int,
         out_path: str = None
 ):
@@ -25,7 +26,7 @@ def fps_select(
     log.info("Read %d configs", len(db))
 
     log.info("Initizaliing FPS")
-    fps = FPS()
+    fps = FPS(atoms=atoms)
 
     selec_confs = fps.select(db, count)
     log.info("Selected %d configs", len(selec_confs))
